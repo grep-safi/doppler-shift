@@ -62,18 +62,21 @@ export default class MainView extends React.Component {
     }
 
     animate() {
+        let circles = this.state.circles;
         if (this.state.time % 100 === 0) {
-            this.state.circles.push({
+            circles.push({
                 cx: this.sourcePos.x,
                 cy: this.sourcePos.y,
                 r: 0,
                 stroke: 'blue',
             });
+
+            circles = circles.filter(element => element.r <= WIDTH);
         }
 
         this.setState({
             time: this.state.time + 1,
-            circles: this.state.circles
+            circles: circles
         });
 
         requestAnimationFrame(this.animate.bind(this));
@@ -110,11 +113,17 @@ export default class MainView extends React.Component {
         const updateSourcePosition = this.updateSourcePosition.bind(this);
         return drag()
             .on('drag', function() {
-                const x = event.x;
-                const y = event.y;
+                let xPos = event.x;
+                let yPos = event.y;
+                if (xPos <= 0) xPos = 0;
+                if (yPos <= 0) yPos = 0;
+
+                if (xPos >= WIDTH) xPos = WIDTH;
+                if (yPos >= HEIGHT) yPos = HEIGHT;
+
                 const thisObj = select(this);
-                if (thisObj.attr('id') === 'source') updateSourcePosition(x, y);
-                thisObj.attr("transform", `translate(${x}, ${y})`);
+                if (thisObj.attr('id') === 'source') updateSourcePosition(xPos, yPos);
+                thisObj.attr("transform", `translate(${xPos}, ${yPos})`);
             });
     }
 
