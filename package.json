@@ -1,0 +1,55 @@
+{
+  "name": "doppler-shift-simulator",
+  "version": "0.1.0",
+  "description": "Doppler Shift Simulator",
+  "main": "main.jsx",
+  "private": true,
+  "scripts": {
+    "serve": "webpack-dev-server --mode development",
+    "build": "webpack --mode production",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint src/*.jsx",
+    "fix": "eslint src/*.jsx --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FoothillAstroSims/Ptolemaic-System-Simulator.git"
+  },
+  "author": "FoothillAstroSims",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FoothillAstroSims/Ptolemaic-System-Simulator/issues"
+  },
+  "homepage": "https://github.com/FoothillAstroSims/Ptolemaic-System-Simulator#readme",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "bootstrap": "^4.5.0",
+    "d3": "^5.16.0",
+    "jquery": "^3.5.1",
+    "pixi.js": "^5.2.1",
+    "popper.js": "^1.16.1",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-react": "^7.8.3",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.5.3",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.18.3",
+    "jsdoc": "^3.6.3",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "babel": {
+    "presets": [
+      "@babel/env",
+      "@babel/react"
+    ]
+  }
+}
