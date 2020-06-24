@@ -30,7 +30,16 @@ export default class MainView extends React.Component {
         this.initialState = {
             circles: [],
             time: 0,
+            // sourcePosition: {
+            //     x: 350,
+            //     y: 200,
+            // }
         }
+
+        this.sourcePos = {
+            x: 350,
+            y: 200,
+        };
 
         this.state = this.initialState;
 
@@ -46,19 +55,17 @@ export default class MainView extends React.Component {
         this.container = select(this.ref.current)
             .append('g');
 
-        this.source = this.createAgents(350, 200, 's');
-        this.observer = this.createAgents(650, 250, 'o');
-
+        this.source = this.createAgents(350, 200, 'source');
+        this.observer = this.createAgents(650, 250, 'observer');
 
         requestAnimationFrame(this.animate.bind(this));
     }
 
     animate() {
-
         if (this.state.time % 100 === 0) {
             this.state.circles.push({
-                cx: 200,
-                cy: 200,
+                cx: this.sourcePos.x,
+                cy: this.sourcePos.y,
                 r: 0,
                 stroke: 'blue',
             });
@@ -77,7 +84,7 @@ export default class MainView extends React.Component {
 
         const object = this.container
             .append('g')
-            .attr('id', 'source')
+            .attr('id', name)
             .attr('transform', `translate(${x}, ${y})`)
             .call(handleDrag)
 
@@ -94,18 +101,35 @@ export default class MainView extends React.Component {
             .attr('x', -4)
             .attr('y', 4)
             .style('cursor', 'default')
-            .text(name);
+            .text(name.charAt(0));
 
         return object;
     }
 
     dragFunction() {
+        const updateSourcePosition = this.updateSourcePosition.bind(this);
         return drag()
             .on('drag', function() {
-                let x = event.x;
-                let y = event.y;
-                select(this).attr("transform", `translate(${x}, ${y})`);
+                const x = event.x;
+                const y = event.y;
+                const thisObj = select(this);
+                if (thisObj.attr('id') === 'source') updateSourcePosition(x, y);
+                thisObj.attr("transform", `translate(${x}, ${y})`);
             });
+    }
+
+    updateSourcePosition(x, y) {
+        this.sourcePos = {
+            x,
+            y
+        };
+
+        // this.setState({
+        //     sourcePosition: {
+        //         x,
+        //         y
+        //     }
+        // });
     }
 
     render() {
