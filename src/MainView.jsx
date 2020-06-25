@@ -9,13 +9,11 @@ const HEIGHT = 400;
 
 const renderCircles = () => {
     return (circleProperties, index) => {
-        circleProperties.r += 0.5;
-
         const circleProps = {
             cx: circleProperties.cx,
             cy: circleProperties.cy,
             r: circleProperties.r,
-            // fill: 'none',
+            fill: 'none',
             stroke: circleProperties.stroke,
             key: index,
         };
@@ -31,6 +29,7 @@ export default class MainView extends React.Component {
         this.initialState = {
             circles: [],
             time: 0,
+            numCollisions: 0,
         }
 
         // Store the positions of all the desired objects
@@ -70,8 +69,8 @@ export default class MainView extends React.Component {
         this.container = select(this.ref.current)
             .append('g');
 
-        this.source = this.createAgents(350, 200, 'source');
-        this.observer = this.createAgents(650, 250, 'observer');
+        this.source = this.createAgents(this.positions.source.x, this.positions.source.y, 'source');
+        this.observer = this.createAgents(this.positions.observer.x, this.positions.observer.y, 'observer');
 
         requestAnimationFrame(this.animate.bind(this));
     }
@@ -80,8 +79,7 @@ export default class MainView extends React.Component {
         const object = this.positions[this.focus];
         const cursor = this.positions.cursor;
 
-        // console.log(`focus: ${this.focus} and ${cursor.x} and ${cursor.y}`);
-        const radius = 0.5;
+        const radius = 0.25;
         const dx = cursor.x - object.x;
         const dy = cursor.y - object.y;
         const angle = Math.atan2(dy, dx);
@@ -90,19 +88,41 @@ export default class MainView extends React.Component {
         let yPos = object.y + radius * Math.sin(angle);
 
         this.updatePosition(this.focus, xPos, yPos);
-        console.log(`new xPos and yPos ${xPos} and ${yPos}`);
         select(`#${this.focus}`)
             .attr('transform', `translate(${xPos}, ${yPos})`);
     }
 
+    updateCircleStatus(d) {
+        d.r += 0.5;
+        
+        if (!d.collided) {
+            const cx = d.cx;
+            const cy = d.cy;
+            const radius = d.r;
+
+            const observer = this.positions.observer;
+            const distanceBetween = Math.sqrt(Math.pow(cx - observer.x, 2) + Math.pow(cy - observer.y, 2));
+
+            d.collided = radius >= distanceBetween;
+            if (d.collided) {
+                this.setState({
+                    numCollisions: this.state.numCollisions + 1
+                });
+            }
+        }
+    }
+
     animate() {
         let circles = this.state.circles;
+        // circles.forEach((d) => d.r += 0.5);
+        circles.forEach(this.updateCircleStatus.bind(this));
         if (this.state.time % 100 === 0) {
             circles.push({
                 cx: this.positions.source.x,
                 cy: this.positions.source.y,
                 r: 0,
                 stroke: 'blue',
+                collided: false,
             });
 
             circles = circles.filter(element => element.r <= WIDTH);
@@ -133,7 +153,7 @@ export default class MainView extends React.Component {
             .append('circle')
             .attr('cx', 0)
             .attr('cy', 0)
-            .attr('r', 15)
+            .attr('r', 10)
             .attr('fill', "darkred")
             .attr('stroke', "black");
 
@@ -201,11 +221,14 @@ export default class MainView extends React.Component {
         return(
             <React.Fragment>
                 <Timeline
-
+                    circles={this.state.circles}
+                    observer={this.positions.observer}
+                    numCollisions={this.state.numCollisions}
                 />
 
                 <div className={"main-view"}>
                     <svg width={WIDTH} height={HEIGHT}>
+                        <rect x={0} y={0} width={'100%'} height={'100%'}></rect>
                         <g> {this.state.circles.map(renderCircles())} </g>
                         <g ref={this.ref} />
                     </svg>

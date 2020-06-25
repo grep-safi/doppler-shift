@@ -17,6 +17,13 @@ body {
     margin: 5px auto;
 }
 
+.observer-detection {
+    border: 1px solid sienna;
+    display: inline-block;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
 .controls-wrapper {
     border: 1px solid gold;
     padding: 5px;
@@ -30,7 +37,7 @@ body {
 .main-view-wrapper {
     border: 1px solid lightseagreen;
     padding: 5px;
-    background-color: dimgrey;
+    background-color: darkcyan;
 }
 
 .wrapper {
