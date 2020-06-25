@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Timeline from './Timeline';
-import {select, drag, event, scaleLinear} from 'd3/dist/d3';
+import {select, drag, event, scaleLinear } from 'd3/dist/d3';
+import { parseSvg } from "d3-interpolate/src/transform/parse";
 
 const WIDTH = 900;
 const HEIGHT = 400;
@@ -96,7 +97,7 @@ export default class MainView extends React.Component {
             .attr('cx', 0)
             .attr('cy', 0)
             .attr('r', 15)
-            .attr('fill', "lightpink")
+            .attr('fill', "darkred")
             .attr('stroke', "black");
 
         object
@@ -113,17 +114,32 @@ export default class MainView extends React.Component {
         const updateSourcePosition = this.updateSourcePosition.bind(this);
         return drag()
             .on('drag', function() {
+                const thisObj = select(this);
+
                 let xPos = event.x;
                 let yPos = event.y;
+
+                // Ensures that object cannot move outside of bounds
                 if (xPos <= 0) xPos = 0;
                 if (yPos <= 0) yPos = 0;
-
                 if (xPos >= WIDTH) xPos = WIDTH;
                 if (yPos >= HEIGHT) yPos = HEIGHT;
 
-                const thisObj = select(this);
+
+                const coordinates = parseSvg(thisObj.attr('transform'));
+                const radius = 1;
+                const dx = xPos - coordinates.translateX;
+                const dy = yPos - coordinates.translateY;
+                const angle = Math.atan2(dy, dx);
+
+                xPos = coordinates.translateX + radius * Math.cos(angle);
+                yPos = coordinates.translateY + radius * Math.sin(angle);
+
                 if (thisObj.attr('id') === 'source') updateSourcePosition(xPos, yPos);
                 thisObj.attr("transform", `translate(${xPos}, ${yPos})`);
+            })
+            .on('start', function() {
+                console.log(`helooooooo`);
             });
     }
 
