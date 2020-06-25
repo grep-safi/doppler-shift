@@ -41,7 +41,7 @@ export default class MainView extends React.Component {
             },
             observer: {
                 x: 650,
-                y: 200
+                y: 250
             },
             cursor: {
                 x: 0,
@@ -80,8 +80,8 @@ export default class MainView extends React.Component {
         const object = this.positions[this.focus];
         const cursor = this.positions.cursor;
 
-        console.log(`focus: ${this.focus}`)
-        const radius = 1;
+        // console.log(`focus: ${this.focus} and ${cursor.x} and ${cursor.y}`);
+        const radius = 0.5;
         const dx = cursor.x - object.x;
         const dy = cursor.y - object.y;
         const angle = Math.atan2(dy, dx);
@@ -90,6 +90,7 @@ export default class MainView extends React.Component {
         let yPos = object.y + radius * Math.sin(angle);
 
         this.updatePosition(this.focus, xPos, yPos);
+        console.log(`new xPos and yPos ${xPos} and ${yPos}`);
         select(`#${this.focus}`)
             .attr('transform', `translate(${xPos}, ${yPos})`);
     }
