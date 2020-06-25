@@ -1,4 +1,5 @@
 import React from 'react';
+import SpikeRecord from './SpikeRecord';
 
 const WIDTH = 700;
 const HEIGHT = 200;
@@ -56,16 +57,24 @@ export default class Timeline extends React.Component {
     render() {
         return(
             <React.Fragment>
-                <div className={"time-line"}>
-                    <p>Waves as detected by observer</p>
-                    <div className={'observer-detection'}>
-                        <svg width={WIDTH} height={HEIGHT}>
-                            <g> {this.collisionSpikes.map(renderSpikes())} </g>
-                            <line x1={WIDTH} y1={HEIGHT / 2} x2={this.time} y2={HEIGHT / 2} stroke={'red'}></line>
-                        </svg>                       
-                    </div>
-                    {/*<p>Waves as detected by observer</p>*/}
-                </div>
+                {/*<div className={"time-line"}>*/}
+                {/*    <p>Waves as detected by observer</p>*/}
+                {/*    <div className={'observer-detection'}>*/}
+                {/*        <svg width={WIDTH} height={HEIGHT}>*/}
+                {/*            <g> {this.collisionSpikes.map(renderSpikes())} </g>*/}
+                {/*            <line x1={WIDTH} y1={HEIGHT / 2} x2={this.time} y2={HEIGHT / 2} stroke={'red'}></line>*/}
+                {/*        </svg>                       */}
+                {/*    </div>*/}
+                {/*    /!*<p>Waves as detected by observer</p>*!/*/}
+                {/*</div>*/}
+
+                <SpikeRecord
+                    WIDTH={WIDTH}
+                    HEIGHT={HEIGHT}
+                    spikeArray={this.collisionSpikes}
+                    time={this.time}
+                />
+
             </React.Fragment>
         );
     }
