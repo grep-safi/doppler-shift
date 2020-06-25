@@ -2,7 +2,7 @@ import React from 'react';
 import SpikeRecord from './SpikeRecord';
 
 const WIDTH = 700;
-const HEIGHT = 200;
+const HEIGHT = 100;
 
 const renderSpikes = () => {
     return (lineProps, index) => {
@@ -22,6 +22,7 @@ export default class Timeline extends React.Component {
     constructor(props) {
         super(props);
         this.collisionSpikes = [];
+        this.sourceSpikes = [];
         this.time = WIDTH;
         this.timeSpeed = 1;
     }
@@ -44,37 +45,53 @@ export default class Timeline extends React.Component {
             });
         }
 
+        if (prevProps.circles !== this.props.circles) {
+            this.sourceSpikes.push({
+                x1: WIDTH,
+                x2: WIDTH,
+                y1: HEIGHT / 2,
+                y2: (HEIGHT / 2) - 15,
+                stroke: 'sienna'
+            });
+        }
+
         // If the line hasn't reached the other end yet, then increment it
         if (this.time >= 0) this.time -= this.timeSpeed;
+
         this.collisionSpikes.forEach((element, index) => {
             element.x1 -= this.timeSpeed;
             element.x2 -= this.timeSpeed;
         });
 
+        this.sourceSpikes.forEach((element, index) => {
+            element.x1 -= this.timeSpeed;
+            element.x2 -= this.timeSpeed;
+        });
+
         this.collisionSpikes = this.collisionSpikes.filter(element => element.x1 >= 0);
+        this.sourceSpikes = this.sourceSpikes.filter(element => element.x1 >= 0);
     }
 
     render() {
         return(
             <React.Fragment>
-                {/*<div className={"time-line"}>*/}
-                {/*    <p>Waves as detected by observer</p>*/}
-                {/*    <div className={'observer-detection'}>*/}
-                {/*        <svg width={WIDTH} height={HEIGHT}>*/}
-                {/*            <g> {this.collisionSpikes.map(renderSpikes())} </g>*/}
-                {/*            <line x1={WIDTH} y1={HEIGHT / 2} x2={this.time} y2={HEIGHT / 2} stroke={'red'}></line>*/}
-                {/*        </svg>                       */}
-                {/*    </div>*/}
-                {/*    /!*<p>Waves as detected by observer</p>*!/*/}
-                {/*</div>*/}
+                <div className={"time-line"}>
+                    <SpikeRecord
+                        title={'Waves as emitted from source'}
+                        WIDTH={WIDTH}
+                        HEIGHT={HEIGHT}
+                        spikeArray={this.sourceSpikes}
+                        time={this.time}
+                    />
 
-                <SpikeRecord
-                    WIDTH={WIDTH}
-                    HEIGHT={HEIGHT}
-                    spikeArray={this.collisionSpikes}
-                    time={this.time}
-                />
-
+                    <SpikeRecord
+                        title={'Waves as detected by observer'}
+                        WIDTH={WIDTH}
+                        HEIGHT={HEIGHT}
+                        spikeArray={this.collisionSpikes}
+                        time={this.time}
+                    />
+                </div>
             </React.Fragment>
         );
     }

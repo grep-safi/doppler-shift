@@ -17,7 +17,7 @@ body {
     margin: 5px auto;
 }
 
-.observer-detection {
+.spike-detection {
     border: 1px solid sienna;
     display: inline-block;
     margin-bottom: 10px;
