@@ -37,7 +37,7 @@ body {
 .main-view-wrapper {
     border: 1px solid lightseagreen;
     padding: 5px;
-    background-color: darkcyan;
+    background-color: rgba(10,0,8,0.68);
 }
 
 .wrapper {

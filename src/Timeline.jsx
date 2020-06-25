@@ -28,8 +28,7 @@ export default class Timeline extends React.Component {
     }
 
     componentDidMount() {
-        // this.container = select(this.ref.current)
-        //     .append('g');
+
     }
 
 
@@ -41,7 +40,7 @@ export default class Timeline extends React.Component {
                 x2: WIDTH,
                 y1: HEIGHT / 2,
                 y2: (HEIGHT / 2) - 15,
-                stroke: 'pink'
+                stroke: 'darkred'
             });
         }
 
@@ -51,7 +50,7 @@ export default class Timeline extends React.Component {
                 x2: WIDTH,
                 y1: HEIGHT / 2,
                 y2: (HEIGHT / 2) - 15,
-                stroke: 'sienna'
+                stroke: 'green'
             });
         }
 

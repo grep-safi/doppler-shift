@@ -21,7 +21,7 @@ export default (props) => {
             <div className={'spike-detection'}>
                 <svg width={props.WIDTH} height={props.HEIGHT}>
                     <g> {props.spikeArray.map(renderSpikes())} </g>
-                    <line x1={props.WIDTH} y1={props.HEIGHT / 2} x2={props.time} y2={props.HEIGHT / 2} stroke={'red'}></line>
+                    <line x1={props.WIDTH} y1={props.HEIGHT / 2} x2={props.time} y2={props.HEIGHT / 2} stroke={'white'}></line>
                 </svg>
             </div>
         </React.Fragment>

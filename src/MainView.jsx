@@ -28,7 +28,7 @@ export default class MainView extends React.Component {
 
         this.initialState = {
             circles: [],
-            time: 0,
+            time: 1,
             numCollisions: 0,
         }
 
@@ -69,8 +69,8 @@ export default class MainView extends React.Component {
         this.container = select(this.ref.current)
             .append('g');
 
-        this.source = this.createAgents(this.positions.source.x, this.positions.source.y, 'source');
-        this.observer = this.createAgents(this.positions.observer.x, this.positions.observer.y, 'observer');
+        this.source = this.createAgents(this.positions.source.x, this.positions.source.y, 'source', 'green');
+        this.observer = this.createAgents(this.positions.observer.x, this.positions.observer.y, 'observer', 'darkred');
 
         requestAnimationFrame(this.animate.bind(this));
     }
@@ -121,7 +121,7 @@ export default class MainView extends React.Component {
                 cx: this.positions.source.x,
                 cy: this.positions.source.y,
                 r: 0,
-                stroke: 'green',
+                stroke: 'blue',
                 collided: false,
             });
 
@@ -140,7 +140,7 @@ export default class MainView extends React.Component {
         requestAnimationFrame(this.animate.bind(this));
     }
 
-    createAgents(x, y, name) {
+    createAgents(x, y, name, fill) {
         const handleDrag = this.dragFunction();
 
         const object = this.container
@@ -154,7 +154,7 @@ export default class MainView extends React.Component {
             .attr('cx', 0)
             .attr('cy', 0)
             .attr('r', 10)
-            .attr('fill', "darkred")
+            .attr('fill', fill)
             .attr('stroke', "black");
 
         object
