@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-
     div {
         border: solid 1px #000;
         background: #eee;
@@ -19,7 +18,7 @@
 <div>drag me</div>
 <div>drag me too</div>
 <div>then drag me</div>
-<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"></script>
 <script>
 
     d3.selectAll("div").on("mousedown", function() {
@@ -31,6 +30,9 @@
             .on("mouseup", mouseup);
 
         d3.event.preventDefault(); // disable text dragging
+
+        let raf = requestAnimationFrame(run.bind(this));
+        let x = 0;
 
         function mousemove() {
             div.text(d3.mouse(div.node()));
