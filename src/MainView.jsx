@@ -121,7 +121,7 @@ export default class MainView extends React.Component {
                 cx: this.positions.source.x,
                 cy: this.positions.source.y,
                 r: 0,
-                stroke: 'blue',
+                stroke: 'green',
                 collided: false,
             });
 
