@@ -33,21 +33,27 @@ export default class MainView extends React.Component {
             time: 0,
         }
 
-        // Store the position of the source circle
-        this.sourcePos = {
-            x: 350,
-            y: 200,
+        // Store the positions of all the desired objects
+        this.positions = {
+            source: {
+                x: 350,
+                y: 200
+            },
+            observer: {
+                x: 650,
+                y: 200
+            },
+            cursor: {
+                x: 0,
+                y: 0
+            }
         };
 
-        this.cursorPos = {
-            x: 0,
-            y: 0
-        };
+        // Holds the focus of the drag
+        this.focus = null;
 
         // Record whether the circles are being dragged
         this.isMoving = false;
-
-        this.state = this.initialState;
 
         // Objects for holding the source and observer circles
         this.source = null;
@@ -55,6 +61,9 @@ export default class MainView extends React.Component {
 
         // Animation frame loop counter
         this.raf = null;
+
+        // Set state to initial state
+        this.state = this.initialState;
     }
 
     componentDidMount() {
@@ -67,26 +76,21 @@ export default class MainView extends React.Component {
         requestAnimationFrame(this.animate.bind(this));
     }
 
-    updateCursorPosition(x, y) {
-        this.cursorPos = {
-            x,
-            y
-        };
-
-    }
-
     moveCircle() {
-        console.log(`cursor: ${this.cursorPos.x} and ${this.cursorPos.y}`);
+        const object = this.positions[this.focus];
+        const cursor = this.positions.cursor;
+
+        console.log(`focus: ${this.focus}`)
         const radius = 1;
-        const dx = this.cursorPos.x - this.sourcePos.x;
-        const dy = this.cursorPos.y - this.sourcePos.y;
+        const dx = cursor.x - object.x;
+        const dy = cursor.y - object.y;
         const angle = Math.atan2(dy, dx);
 
-        let xPos = this.sourcePos.x + radius * Math.cos(angle);
-        let yPos = this.sourcePos.y + radius * Math.sin(angle);
+        let xPos = object.x + radius * Math.cos(angle);
+        let yPos = object.y + radius * Math.sin(angle);
 
-        this.updateSourcePosition(xPos, yPos);
-        select('#source')
+        this.updatePosition(this.focus, xPos, yPos);
+        select(`#${this.focus}`)
             .attr('transform', `translate(${xPos}, ${yPos})`);
     }
 
@@ -94,8 +98,8 @@ export default class MainView extends React.Component {
         let circles = this.state.circles;
         if (this.state.time % 100 === 0) {
             circles.push({
-                cx: this.sourcePos.x,
-                cy: this.sourcePos.y,
+                cx: this.positions.source.x,
+                cy: this.positions.source.y,
                 r: 0,
                 stroke: 'blue',
             });
@@ -143,13 +147,11 @@ export default class MainView extends React.Component {
     }
 
     dragFunction() {
-        const updateSourcePosition = this.updateSourcePosition.bind(this);
-        const updateCursorPosition = this.updateCursorPosition.bind(this);
+        const updatePosition = this.updatePosition.bind(this);
         const updateIsMoving = this.updateIsMoving.bind(this);
 
         return drag()
             .on('start', function() {
-                updateIsMoving(true);
 
                 let xPos = event.x;
                 let yPos = event.y;
@@ -160,7 +162,8 @@ export default class MainView extends React.Component {
                 if (xPos >= WIDTH) xPos = WIDTH;
                 if (yPos >= HEIGHT) yPos = HEIGHT;
 
-                updateCursorPosition(xPos, yPos);
+                updatePosition('cursor', xPos, yPos);
+                updateIsMoving(true, select(this).attr('id'));
             })
             .on('drag', function() {
                 // const thisObj = select(this);
@@ -174,41 +177,23 @@ export default class MainView extends React.Component {
                 if (xPos >= WIDTH) xPos = WIDTH;
                 if (yPos >= HEIGHT) yPos = HEIGHT;
 
-                updateCursorPosition(xPos, yPos);
-
-                // const coordinates = parseSvg(thisObj.attr('transform'));
-                // const radius = 1;
-                // const dx = xPos - coordinates.translateX;
-                // const dy = yPos - coordinates.translateY;
-                // const angle = Math.atan2(dy, dx);
-                //
-                // xPos = coordinates.translateX + radius * Math.cos(angle);
-                // yPos = coordinates.translateY + radius * Math.sin(angle);
-
-                // if (thisObj.attr('id') === 'source') updateSourcePosition(xPos, yPos);
-                // thisObj.attr("transform", `translate(${xPos}, ${yPos})`);
+                updatePosition('cursor', xPos, yPos);
             })
             .on('end', function() {
-                updateIsMoving(false);
+                updateIsMoving(false, null);
             });
     }
 
-    updateIsMoving(bool) {
+    updateIsMoving(bool, object) {
         this.isMoving = bool;
+        this.focus = object;
     }
 
-    updateSourcePosition(x, y) {
-        this.sourcePos = {
+    updatePosition(name, x, y) {
+        this.positions[name] = {
             x,
             y
         };
-
-        // this.setState({
-        //     sourcePosition: {
-        //         x,
-        //         y
-        //     }
-        // });
     }
 
     render() {
