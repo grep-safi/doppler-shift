@@ -39,7 +39,8 @@ export default class Timeline extends React.Component {
                 x1: WIDTH,
                 x2: WIDTH,
                 y1: HEIGHT / 2,
-                y2: (HEIGHT / 2) - 15,
+                y2: (HEIGHT / 2) - 25,
+                strokeWidth: 2.5,
                 stroke: 'darkred'
             });
         }
@@ -49,7 +50,8 @@ export default class Timeline extends React.Component {
                 x1: WIDTH,
                 x2: WIDTH,
                 y1: HEIGHT / 2,
-                y2: (HEIGHT / 2) - 15,
+                y2: (HEIGHT / 2) - 25,
+                strokeWidth: 2.5,
                 stroke: 'green'
             });
         }

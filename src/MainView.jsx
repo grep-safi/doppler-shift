@@ -32,6 +32,8 @@ export default class MainView extends React.Component {
             numCollisions: 0,
         }
 
+        this.speed = 1;
+
         // Store the positions of all the desired objects
         this.positions = {
             source: {
@@ -79,7 +81,7 @@ export default class MainView extends React.Component {
         const object = this.positions[this.focus];
         const cursor = this.positions.cursor;
 
-        const radius = 0.25;
+        const radius = this.speed / 4;
         const dx = cursor.x - object.x;
         const dy = cursor.y - object.y;
         const angle = Math.atan2(dy, dx);
@@ -114,7 +116,6 @@ export default class MainView extends React.Component {
 
     animate() {
         let circles = this.state.circles;
-        // circles.forEach((d) => d.r += 0.5);
         circles.forEach(this.updateCircleStatus.bind(this));
         if (this.state.time % 100 === 0) {
             circles.push({
@@ -133,7 +134,7 @@ export default class MainView extends React.Component {
         }
 
         this.setState({
-            time: this.state.time + 1,
+            time: this.state.time + this.speed,
             circles: circles
         });
 

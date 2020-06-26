@@ -7,6 +7,7 @@ const renderSpikes = () => {
             x2: lineProps.x2,
             y1: lineProps.y1,
             y2: lineProps.y2,
+            strokeWidth: lineProps.strokeWidth,
             stroke: lineProps.stroke,
             key: index,
         };
@@ -17,7 +18,7 @@ const renderSpikes = () => {
 export default (props) => {
     return (
         <React.Fragment>
-            <p>{props.title}</p>
+            <p style={{color: 'white'}}>{props.title}</p>
             <div className={'spike-detection'}>
                 <svg width={props.WIDTH} height={props.HEIGHT}>
                     <g> {props.spikeArray.map(renderSpikes())} </g>
