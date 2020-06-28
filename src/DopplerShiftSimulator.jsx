@@ -10,9 +10,9 @@ export default class DopplerShiftSimulator extends React.Component {
         super(props);
         this.initialState = {
             parameters: {
-                animationRate: 0.50,
+                animationRate: 1,
                 isAnimationEnabled: false,
-                isEmissionEnabled: false
+                isEmissionEnabled: true
             }
             // might need to initialize some more variables
         };
@@ -28,18 +28,19 @@ export default class DopplerShiftSimulator extends React.Component {
                 </div>
 
 
-                <div className="wrapper">
+                {/* <div className="wrapper">
                     <div className="controls-wrapper">
                         <Controls
                             params={this.state.parameters}
                             onChange={this.handleNewParameters.bind(this)}
                         />
                     </div>
-                </div>
+                </div> */}
 
                 <div className="main-view-wrapper">
                     <MainView
                         params={this.state.parameters}
+                        onChange={this.handleNewParameters.bind(this)}
                     />
                 </div>
             </React.Fragment>
@@ -50,9 +51,9 @@ export default class DopplerShiftSimulator extends React.Component {
         this.setState({ parameters: newParams });
     }
 
-    handleNewSettings(newSettings) {
-        this.setState({ settings: newSettings });
-    }
+    // handleNewSettings(newSettings) {
+    //     this.setState({ settings: newSettings });
+    // }
 
     handleResetClick(event) {
         event.preventDefault();

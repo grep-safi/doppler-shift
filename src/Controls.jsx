@@ -12,27 +12,31 @@ export default class Controls extends React.Component {
         return(
             <React.Fragment>
                 <h2>Controls</h2>
+                <br/>
                 <input
                     className="btn btn-primary" 
+                    id="sim-button"
                     name="isAnimationEnabled"
                     type="button" 
                     value={animationButtonValue}
                     onClick={this.handleButtonClick.bind(this)}
                 />
-                &nbsp;&nbsp;
+                <br/><br/>
                 <label htmlFor="animationRate">Animation rate</label>
+                <br/>
                 <input
                     name="animationRate"
                     type="range"
-                    min="0"
-                    max="1"
+                    min="0.1"
+                    max="2"
                     step="0.01"
                     value={this.props.params.animationRate}
                     onChange={this.handleSliderChange.bind(this)}
                 />
-                <br/>
+                <br/><br/>
                 <input
                     className="btn btn-primary"
+                    id="sim-button"
                     name="isEmissionEnabled"
                     type="button"
                     value={emissionButtonValue}
@@ -65,11 +69,11 @@ export default class Controls extends React.Component {
 }
 
 
-Controls.propTypes = {
-    params: PropTypes.exact({
-        animationRate: PropTypes.number.isRequired,
-        isAnimationEnabled: PropTypes.bool.isRequired,
-        isEmissionEnabled: PropTypes.bool.isRequired
-    }).isRequired,
-    onChange: PropTypes.func.isRequired
-};
+// Controls.propTypes = {
+//     params: PropTypes.exact({
+//         animationRate: PropTypes.number.isRequired,
+//         isAnimationEnabled: PropTypes.bool.isRequired,
+//         isEmissionEnabled: PropTypes.bool.isRequired
+//     }).isRequired,
+//     onChange: PropTypes.func.isRequired
+// };

@@ -32,7 +32,7 @@ export default class MainView extends React.Component {
             numCollisions: 0,
         }
 
-        this.speed = 1;
+        // this.speed = 1;
 
         // Store the positions of all the desired objects
         this.positions = {
@@ -71,8 +71,8 @@ export default class MainView extends React.Component {
         this.container = select(this.ref.current)
             .append('g');
 
-        this.source = this.createAgents(this.positions.source.x, this.positions.source.y, 'source', 'green');
         this.observer = this.createAgents(this.positions.observer.x, this.positions.observer.y, 'observer', 'darkred');
+        this.source = this.createAgents(this.positions.source.x, this.positions.source.y, 'source', 'green');
 
         requestAnimationFrame(this.animate.bind(this));
     }
@@ -81,7 +81,7 @@ export default class MainView extends React.Component {
         const object = this.positions[this.focus];
         const cursor = this.positions.cursor;
 
-        const radius = this.speed / 4;
+        const radius = 2 * this.props.params.animationRate / 3;  // two-thirds speed of animation rate
         const dx = cursor.x - object.x;
         const dy = cursor.y - object.y;
         const angle = Math.atan2(dy, dx);
@@ -91,11 +91,11 @@ export default class MainView extends React.Component {
 
         this.updatePosition(this.focus, xPos, yPos);
         select(`#${this.focus}`)
-            .attr('transform', `translate(${xPos}, ${yPos})`);
+            .attr('transform', `translate(${xPos}, ${yPos})`)
     }
 
     updateCircleStatus(d) {
-        d.r += 0.5;
+        d.r += this.props.params.animationRate;
         
         if (!d.collided) {
             const cx = d.cx;
@@ -115,28 +115,36 @@ export default class MainView extends React.Component {
     }
 
     animate() {
-        let circles = this.state.circles;
-        circles.forEach(this.updateCircleStatus.bind(this));
-        if (this.state.time % 100 === 0) {
-            circles.push({
-                cx: this.positions.source.x,
-                cy: this.positions.source.y,
-                r: 0,
-                stroke: 'blue',
-                collided: false,
+        if (this.props.params.isAnimationEnabled) {
+
+            let circles = this.state.circles;
+            circles.forEach(this.updateCircleStatus.bind(this));
+
+            if (this.props.params.isEmissionEnabled) {
+                if (this.state.time % 100 === 0) {
+                    circles.push({
+                        cx: this.positions.source.x,
+                        cy: this.positions.source.y,
+                        r: 0,
+                        stroke: 'whitesmoke',
+                        collided: false,
+                    });
+
+                    circles = circles.filter(element => element.r <= WIDTH);
+                }
+
+            }
+
+            if (this.isMoving) {
+                this.moveCircle();
+            }
+
+            this.setState({
+                time: this.state.time + 1, // * this.props.params.animationRate,
+                circles: circles
             });
-
-            circles = circles.filter(element => element.r <= WIDTH);
+        
         }
-
-        if (this.isMoving) {
-            this.moveCircle();
-        }
-
-        this.setState({
-            time: this.state.time + this.speed,
-            circles: circles
-        });
 
         requestAnimationFrame(this.animate.bind(this));
     }
@@ -225,6 +233,8 @@ export default class MainView extends React.Component {
                     circles={this.state.circles}
                     observer={this.positions.observer}
                     numCollisions={this.state.numCollisions}
+                    params={this.props.params}
+                    onChange={this.props.onChange}
                 />
 
                 <div className={"main-view"}>
