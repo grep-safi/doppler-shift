@@ -27,7 +27,6 @@ export default class DopplerShiftSimulator extends React.Component {
                     <NavigationBar onReset={this.handleResetClick.bind(this)}/>
                 </div>
 
-
                 {/* <div className="wrapper">
                     <div className="controls-wrapper">
                         <Controls

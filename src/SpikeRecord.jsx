@@ -1,4 +1,5 @@
 import React from 'react';
+import LineGraph from "./LineGraph";
 
 const renderSpikes = () => {
     return (lineProps, index) => {
@@ -21,7 +22,19 @@ export default (props) => {
             <p>{props.title}</p>
             <div className={'spike-detection'}>
                 <svg width={props.WIDTH} height={props.HEIGHT}>
-                    <g> {props.spikeArray.map(renderSpikes())} </g>
+                    {/*<g> {props.spikeArray.map(renderSpikes())} </g>*/}
+
+                    {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/}
+                    {/*Comment this entire <LineGraph /> section in order to remove the curve*/}
+                    <LineGraph
+                        spikeArray={props.spikeArray}
+                        id={props.id}
+                        color={props.color}
+                        width={700}
+                        height={100}
+                    />
+                    {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/}
+
                     <line x1={props.WIDTH} y1={props.HEIGHT / 2} x2={props.time} y2={props.HEIGHT / 2} stroke={'black'}></line>
                 </svg>
             </div>

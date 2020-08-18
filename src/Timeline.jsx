@@ -36,23 +36,25 @@ export default class Timeline extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.params.isAnimationEnabled) {
             if (prevProps.numCollisions !== this.props.numCollisions) {
-                console.log(`# of collisions: ${this.props.numCollisions}`);
+                //console.log(`# of collisions: ${this.props.numCollisions}`);
+                //console.log(`observer amplitude: ${this.props.observerAmp}`);
                 this.collisionSpikes.push({
                     x1: WIDTH,
                     x2: WIDTH,
-                    y1: HEIGHT / 2,
-                    y2: (HEIGHT / 2) - 25,
+                    y1: (HEIGHT / 2) - 25*this.props.observerAmp + 2,
+                    y2: (HEIGHT / 2) - 25*this.props.observerAmp,
                     strokeWidth: 2.5,
                     stroke: 'darkred'
                 });
             }
 
             if (prevProps.circles !== this.props.circles) {
+                //console.log(`source amplitude: ${this.props.sourceAmp}`);
                 this.sourceSpikes.push({
                     x1: WIDTH,
                     x2: WIDTH,
-                    y1: HEIGHT / 2,
-                    y2: (HEIGHT / 2) - 25,
+                    y1: (HEIGHT / 2)  - 25*this.props.sourceAmp + 2,
+                    y2: (HEIGHT / 2)  - 25*this.props.sourceAmp,
                     strokeWidth: 2.5,
                     stroke: 'green'
                 });
@@ -88,6 +90,8 @@ export default class Timeline extends React.Component {
                                 HEIGHT={HEIGHT}
                                 spikeArray={this.sourceSpikes}
                                 time={this.time}
+                                id={'first'}
+                                color={'green'}
                             />
 
                             <SpikeRecord
@@ -96,6 +100,8 @@ export default class Timeline extends React.Component {
                                 HEIGHT={HEIGHT}
                                 spikeArray={this.collisionSpikes}
                                 time={this.time}
+                                id={'second'}
+                                color={'darkred'}
                             />
                         </div>
                         <div className="box">

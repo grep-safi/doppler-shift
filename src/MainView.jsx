@@ -16,6 +16,7 @@ const renderCircles = () => {
             fill: 'none',
             stroke: circleProperties.stroke,
             key: index,
+            amp: circleProperties.amp,
         };
         return <circle {...circleProps} />;
     };
@@ -28,8 +29,10 @@ export default class MainView extends React.Component {
 
         this.initialState = {
             circles: [],
-            time: 1,
+            time: 0,
             numCollisions: 0,
+            sourceAmp: 0,
+            observerAmp: 0,
         }
 
         // this.speed = 1;
@@ -71,8 +74,8 @@ export default class MainView extends React.Component {
         this.container = select(this.ref.current)
             .append('g');
 
-        this.observer = this.createAgents(this.positions.observer.x, this.positions.observer.y, 'observer', 'darkred');
-        this.source = this.createAgents(this.positions.source.x, this.positions.source.y, 'source', 'green');
+        this.observer = this.createAgents(this.positions.observer.x, this.positions.observer.y, 'observer', 'darkred',1);
+        this.source = this.createAgents(this.positions.source.x, this.positions.source.y, 'source', 'green',1);
 
         requestAnimationFrame(this.animate.bind(this));
     }
@@ -107,7 +110,10 @@ export default class MainView extends React.Component {
 
             d.collided = radius >= distanceBetween;
             if (d.collided) {
+                this.observer.amp = d.amp;
+                //console.log(`observer amplitude: ${this.observer.amp}`);
                 this.setState({
+                    observerAmp: this.observer.amp,
                     numCollisions: this.state.numCollisions + 1
                 });
             }
@@ -116,21 +122,43 @@ export default class MainView extends React.Component {
 
     animate() {
         if (this.props.params.isAnimationEnabled) {
-
             let circles = this.state.circles;
+
             circles.forEach(this.updateCircleStatus.bind(this));
 
             if (this.props.params.isEmissionEnabled) {
                 if (this.state.time % 100 === 0) {
+                    //console.log(`current time ${this.state.time}`);
+                    this.source.amp = Math.cos(2.0 * Math.PI * this.state.time / 100);
+                    this.setState({
+                        sourceAmp: this.source.amp
+                    });
+                    //console.log(`source amplitude: ${this.source.amp}`);
                     circles.push({
                         cx: this.positions.source.x,
                         cy: this.positions.source.y,
                         r: 0,
                         stroke: 'whitesmoke',
                         collided: false,
+                        amp: this.source.amp
                     });
-
-                    circles = circles.filter(element => element.r <= WIDTH);
+                circles = circles.filter(element => element.r <= WIDTH);
+                } else if (this.state.time % 3 === 0) {
+                    //console.log(`current time ${this.state.time}`);
+                    this.source.amp = Math.cos(2 * Math.PI * this.state.time / 100);
+                    this.setState({
+                        sourceAmp: this.source.amp
+                    });
+                    //console.log(`source amplitude: ${this.source.amp}`);
+                    circles.push({
+                        cx: this.positions.source.x,
+                        cy: this.positions.source.y,
+                        r: 0,
+                        stroke: 'black',
+                        collided: false,
+                        amp: Math.cos(2 * Math.PI * this.state.time / 100)
+                    });
+                circles = circles.filter(element => element.r <= WIDTH);
                 }
 
             }
@@ -149,7 +177,7 @@ export default class MainView extends React.Component {
         requestAnimationFrame(this.animate.bind(this));
     }
 
-    createAgents(x, y, name, fill) {
+    createAgents(x, y, name, fill,amp) {
         const handleDrag = this.dragFunction();
 
         const object = this.container
@@ -164,7 +192,8 @@ export default class MainView extends React.Component {
             .attr('cy', 0)
             .attr('r', 10)
             .attr('fill', fill)
-            .attr('stroke', "black");
+            .attr('stroke', "black")
+            .attr('amp', amp);
 
         object
             .append('text')
@@ -235,6 +264,8 @@ export default class MainView extends React.Component {
                     numCollisions={this.state.numCollisions}
                     params={this.props.params}
                     onChange={this.props.onChange}
+                    sourceAmp ={this.state.sourceAmp}
+                    observerAmp = {this.state.observerAmp}
                 />
 
                 <div className={"main-view"}>

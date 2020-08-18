@@ -10,7 +10,7 @@ export default class NavigationBar extends React.Component {
         return (
             <React.Fragment>
                 <div className="navbar">
-                    <h1 id="title"><strong>Doppler Shift Simulator</strong></h1>
+                    <h1 id="title"><strong>Doppler Shift</strong></h1>
                     <nav>
                         <ul>
                             <li>
