@@ -14,7 +14,6 @@ export default class DopplerShiftSimulator extends React.Component {
                 isAnimationEnabled: false,
                 isEmissionEnabled: true
             }
-            // might need to initialize some more variables
         };
 
         this.state = this.initialState;
@@ -26,15 +25,6 @@ export default class DopplerShiftSimulator extends React.Component {
                 <div className="box">
                     <NavigationBar onReset={this.handleResetClick.bind(this)}/>
                 </div>
-
-                {/* <div className="wrapper">
-                    <div className="controls-wrapper">
-                        <Controls
-                            params={this.state.parameters}
-                            onChange={this.handleNewParameters.bind(this)}
-                        />
-                    </div>
-                </div> */}
 
                 <div className="main-view-wrapper">
                     <MainView
@@ -49,10 +39,6 @@ export default class DopplerShiftSimulator extends React.Component {
     handleNewParameters(newParams) {
         this.setState({ parameters: newParams });
     }
-
-    // handleNewSettings(newSettings) {
-    //     this.setState({ settings: newSettings });
-    // }
 
     handleResetClick(event) {
         event.preventDefault();

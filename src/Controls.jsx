@@ -48,9 +48,9 @@ export default class Controls extends React.Component {
 
     handleButtonClick(e) {
         let buttonValue;
-        if (e.target.name == 'isAnimationEnabled')
+        if (e.target.name === 'isAnimationEnabled')
             buttonValue = this.props.params.isAnimationEnabled;
-        if (e.target.name == 'isEmissionEnabled')
+        if (e.target.name === 'isEmissionEnabled')
             buttonValue = this.props.params.isEmissionEnabled;
 
         this.props.onChange({
@@ -67,13 +67,3 @@ export default class Controls extends React.Component {
     }
 
 }
-
-
-// Controls.propTypes = {
-//     params: PropTypes.exact({
-//         animationRate: PropTypes.number.isRequired,
-//         isAnimationEnabled: PropTypes.bool.isRequired,
-//         isEmissionEnabled: PropTypes.bool.isRequired
-//     }).isRequired,
-//     onChange: PropTypes.func.isRequired
-// };

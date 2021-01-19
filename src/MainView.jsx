@@ -1,8 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Timeline from './Timeline';
 import {select, drag, event, scaleLinear } from 'd3/dist/d3';
-import { parseSvg } from "d3-interpolate/src/transform/parse";
 
 const WIDTH = 900;
 const HEIGHT = 400;
@@ -34,8 +32,6 @@ export default class MainView extends React.Component {
             sourceAmp: 0,
             observerAmp: 0,
         }
-
-        // this.speed = 1;
 
         // Store the positions of all the desired objects
         this.positions = {
@@ -128,12 +124,10 @@ export default class MainView extends React.Component {
 
             if (this.props.params.isEmissionEnabled) {
                 if (this.state.time % 100 === 0) {
-                    //console.log(`current time ${this.state.time}`);
                     this.source.amp = Math.cos(2.0 * Math.PI * this.state.time / 100);
                     this.setState({
                         sourceAmp: this.source.amp
                     });
-                    //console.log(`source amplitude: ${this.source.amp}`);
                     circles.push({
                         cx: this.positions.source.x,
                         cy: this.positions.source.y,
@@ -144,12 +138,10 @@ export default class MainView extends React.Component {
                     });
                 circles = circles.filter(element => element.r <= WIDTH);
                 } else if (this.state.time % 3 === 0) {
-                    //console.log(`current time ${this.state.time}`);
                     this.source.amp = Math.cos(2 * Math.PI * this.state.time / 100);
                     this.setState({
                         sourceAmp: this.source.amp
                     });
-                    //console.log(`source amplitude: ${this.source.amp}`);
                     circles.push({
                         cx: this.positions.source.x,
                         cy: this.positions.source.y,
@@ -225,8 +217,6 @@ export default class MainView extends React.Component {
                 updateIsMoving(true, select(this).attr('id'));
             })
             .on('drag', function() {
-                // const thisObj = select(this);
-
                 let xPos = event.x;
                 let yPos = event.y;
 

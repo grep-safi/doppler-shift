@@ -36,8 +36,6 @@ export default class Timeline extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.params.isAnimationEnabled) {
             if (prevProps.numCollisions !== this.props.numCollisions) {
-                //console.log(`# of collisions: ${this.props.numCollisions}`);
-                //console.log(`observer amplitude: ${this.props.observerAmp}`);
                 this.collisionSpikes.push({
                     x1: WIDTH,
                     x2: WIDTH,
@@ -49,7 +47,6 @@ export default class Timeline extends React.Component {
             }
 
             if (prevProps.circles !== this.props.circles) {
-                //console.log(`source amplitude: ${this.props.sourceAmp}`);
                 this.sourceSpikes.push({
                     x1: WIDTH,
                     x2: WIDTH,
